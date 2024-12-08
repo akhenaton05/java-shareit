@@ -7,10 +7,7 @@ import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidateException;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -38,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (users.containsKey(userId)) {
             User oldUser = users.get(userId);
             oldUser.setName(user.getName());
-            if (user.getEmail() != null && !oldUser.getEmail().equalsIgnoreCase(user.getEmail())) {
+            if (Objects.nonNull(user.getEmail()) && !oldUser.getEmail().equalsIgnoreCase(user.getEmail())) {
                 checkUser(user);
                 oldUser.setEmail(user.getEmail());
             }
@@ -61,7 +58,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public User checkUser(User user) {
-        if (user.getEmail() == null || !user.getEmail().contains("@")) {
+        if (Objects.isNull(user.getEmail()) || !user.getEmail().contains("@")) {
             throw new ValidateException("Неверный формат email");
         }
         for (User u : users.values()) {

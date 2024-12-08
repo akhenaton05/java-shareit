@@ -16,10 +16,11 @@ import java.util.Optional;
 public class ItemController {
     @Autowired
     private ItemService itemService;
+    private static final String SHARER_USER_ID = "X-Sharer-User-Id";
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemDto> getItems(@RequestHeader(SHARER_USER_ID) Long userId) {
         return itemService.getItems(userId);
     }
 
@@ -31,20 +32,20 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemDto createItem(@RequestHeader(SHARER_USER_ID) Long userId,
                               @RequestBody ItemDto dto) {
         return itemService.createItem(userId, dto);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemDto updateItem(@RequestHeader(SHARER_USER_ID) Long userId,
                               @PathVariable("itemId") long itemId, @RequestBody ItemDto dto) {
         return itemService.updateItem(userId, itemId, dto);
     }
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDto> foundItem(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam Optional<String> text) {
+    public List<ItemDto> foundItem(@RequestHeader(SHARER_USER_ID) Long userId, @RequestParam Optional<String> text) {
         return itemService.foundItem(text);
     }
 }

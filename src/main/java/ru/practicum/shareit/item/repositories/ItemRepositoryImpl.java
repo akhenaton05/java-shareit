@@ -15,12 +15,8 @@ import java.util.*;
 @Component
 public class ItemRepositoryImpl implements ItemRepository {
     @Autowired
-    UserRepositoryImpl userRepository;
-    Map<Long, Item> items = new HashMap<>();
-
-    public List<Item> showAllItems() {
-        return new ArrayList<Item>(items.values());
-    }
+    private UserRepositoryImpl userRepository;
+    private Map<Long, Item> items = new HashMap<>();
 
     @Override
     public List<Item> showItems(Long userId) {
@@ -50,13 +46,13 @@ public class ItemRepositoryImpl implements ItemRepository {
         if (!Objects.equals(items.get(itemId).getOwner().getId(), userId)) {
             throw new NotFoundException("Неверный владелец вещи");
         }
-        if (item.getName() != null) {
+        if (Objects.nonNull(item.getName())) {
             items.get(itemId).setName(item.getName());
         }
-        if (item.getDescription() != null) {
+        if (Objects.nonNull(item.getDescription())) {
             items.get(itemId).setDescription(item.getDescription());
         }
-        if (item.getAvailable() != null) {
+        if (Objects.nonNull(item.getAvailable())) {
             items.get(itemId).setAvailable(item.getAvailable());
         }
         items.put(itemId, items.get(itemId));
@@ -72,13 +68,13 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     public Item checkItem(Item item) {
-        if (item.getName() == null || item.getName().isEmpty()) {
+        if (Objects.isNull(item.getName()) || item.getName().isEmpty()) {
             throw new ValidateException("Название отсутствует");
         }
-        if (item.getDescription() == null || item.getDescription().isEmpty()) {
+        if (Objects.isNull(item.getDescription()) || item.getDescription().isEmpty()) {
             throw new ValidateException("Описание отсутствует");
         }
-        if (item.getAvailable() == null) {
+        if (Objects.isNull(item.getAvailable())) {
             throw new ValidateException("Статус отсутствует");
         }
         return item;
