@@ -21,7 +21,6 @@ public class BookingMapper {
         dto.setBooker(booking.getBooker());
         dto.setStatus(booking.getStatus());
 
-        System.out.println(dto);
         return dto;
     }
 
