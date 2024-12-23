@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Status;
@@ -23,15 +23,12 @@ import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    @Autowired
-    ItemRepository itemRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    BookingRepository bookingRepository;
-    @Autowired
-    CommentRepository commentRepository;
+    private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public List<ItemDto> getItems(Long userId) {

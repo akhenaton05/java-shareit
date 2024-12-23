@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingMapper;
@@ -26,13 +26,11 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
-    @Autowired
-    BookingRepository bookingRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    ItemRepository itemRepository;
+    private final BookingRepository bookingRepository;
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
 
     @Override
     public BookingOutDto getBookingById(Long userId, Long bookingId) {
