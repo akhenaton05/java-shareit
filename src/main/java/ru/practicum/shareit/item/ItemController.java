@@ -14,9 +14,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/items")
 public class ItemController {
-    @Autowired
     private ItemService itemService;
     private static final String SHARER_USER_ID = "X-Sharer-User-Id";
+
+    @Autowired
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

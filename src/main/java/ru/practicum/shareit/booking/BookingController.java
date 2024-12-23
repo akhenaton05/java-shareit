@@ -13,9 +13,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping(path = "/bookings")
 public class BookingController {
-    @Autowired
     private BookingService bookingService;
     private static final String SHARER_USER_ID = "X-Sharer-User-Id";
+
+    @Autowired
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
 
     @GetMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
