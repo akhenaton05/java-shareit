@@ -198,7 +198,7 @@ public class BookingServiceImplTest {
     }
 
     @Test
-    void foundUsersBookingsByState() {
+    void foundUsersBookingsByStateAll() {
         booking.setStart(LocalDateTime.now().plusDays(1));
         booking.setBooker(user);
         when(itemRepository.findByOwnerId(any()))
@@ -207,6 +207,86 @@ public class BookingServiceImplTest {
                 .thenReturn(List.of(booking));
 
         List<BookingOutDto> foundBooking = bookingService.foundUsersBookingsByState(1L, Optional.of("ALL"));
+
+        assertEquals(1L, foundBooking.getFirst().getId());
+        assertEquals(foundBooking.getFirst().getBooker().getId(), booking.getBooker().getId());
+        assertEquals(foundBooking.getFirst().getStatus(), booking.getStatus());
+    }
+
+    @Test
+    void foundUsersBookingsByStateCurrent() {
+        booking.setStart(LocalDateTime.now().plusDays(1));
+        booking.setBooker(user);
+        when(itemRepository.findByOwnerId(any()))
+                .thenReturn(List.of(item));
+        when(bookingRepository.findByItemsAndStatus(any(), any()))
+                .thenReturn(List.of(booking));
+
+        List<BookingOutDto> foundBooking = bookingService.foundUsersBookingsByState(1L, Optional.of("CURRENT"));
+
+        assertEquals(1L, foundBooking.getFirst().getId());
+        assertEquals(foundBooking.getFirst().getBooker().getId(), booking.getBooker().getId());
+        assertEquals(foundBooking.getFirst().getStatus(), booking.getStatus());
+    }
+
+    @Test
+    void foundUsersBookingsByStatePast() {
+        booking.setStart(LocalDateTime.now().plusDays(1));
+        booking.setBooker(user);
+        when(itemRepository.findByOwnerId(any()))
+                .thenReturn(List.of(item));
+        when(bookingRepository.findAllByBookerIdAndPast(any(), any()))
+                .thenReturn(List.of(booking));
+
+        List<BookingOutDto> foundBooking = bookingService.foundUsersBookingsByState(1L, Optional.of("PAST"));
+
+        assertEquals(1L, foundBooking.getFirst().getId());
+        assertEquals(foundBooking.getFirst().getBooker().getId(), booking.getBooker().getId());
+        assertEquals(foundBooking.getFirst().getStatus(), booking.getStatus());
+    }
+
+    @Test
+    void foundUsersBookingsByStateFuture() {
+        booking.setStart(LocalDateTime.now().plusDays(1));
+        booking.setBooker(user);
+        when(itemRepository.findByOwnerId(any()))
+                .thenReturn(List.of(item));
+        when(bookingRepository.findAllByBookerIdAndFuture(any(), any()))
+                .thenReturn(List.of(booking));
+
+        List<BookingOutDto> foundBooking = bookingService.foundUsersBookingsByState(1L, Optional.of("FUTURE"));
+
+        assertEquals(1L, foundBooking.getFirst().getId());
+        assertEquals(foundBooking.getFirst().getBooker().getId(), booking.getBooker().getId());
+        assertEquals(foundBooking.getFirst().getStatus(), booking.getStatus());
+    }
+
+    @Test
+    void foundUsersBookingsByStateWaiting() {
+        booking.setStart(LocalDateTime.now().plusDays(1));
+        booking.setBooker(user);
+        when(itemRepository.findByOwnerId(any()))
+                .thenReturn(List.of(item));
+        when(bookingRepository.findByItemsAndStatus(any(), any()))
+                .thenReturn(List.of(booking));
+
+        List<BookingOutDto> foundBooking = bookingService.foundUsersBookingsByState(1L, Optional.of("WAITING"));
+
+        assertEquals(1L, foundBooking.getFirst().getId());
+        assertEquals(foundBooking.getFirst().getBooker().getId(), booking.getBooker().getId());
+        assertEquals(foundBooking.getFirst().getStatus(), booking.getStatus());
+    }
+
+    @Test
+    void foundUsersBookingsByStateRejected() {
+        booking.setStart(LocalDateTime.now().plusDays(1));
+        booking.setBooker(user);
+        when(itemRepository.findByOwnerId(any()))
+                .thenReturn(List.of(item));
+        when(bookingRepository.findByItemsAndStatus(any(), any()))
+                .thenReturn(List.of(booking));
+
+        List<BookingOutDto> foundBooking = bookingService.foundUsersBookingsByState(1L, Optional.of("REJECTED"));
 
         assertEquals(1L, foundBooking.getFirst().getId());
         assertEquals(foundBooking.getFirst().getBooker().getId(), booking.getBooker().getId());
