@@ -45,8 +45,8 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemId).orElseThrow(NotFoundException::new);
         LocalDateTime ldt = LocalDateTime.now();
         ZonedDateTime zoned = ldt.atZone(ZoneId.of("UTC"));
-        Instant instant=zoned.toInstant();
-        ldt=instant.atZone(ZoneId.of("Europe/Moscow")).toLocalDateTime();
+        Instant instant = zoned.toInstant();
+        ldt = instant.atZone(ZoneId.of("Europe/Moscow")).toLocalDateTime();
         List<Booking> lastList = bookingRepository.findLastBooking(item.getId(), ldt);
         Booking last = !lastList.isEmpty() ? lastList.getFirst() : null;
         List<Booking> nextList = bookingRepository.findNextBooking(item.getId(), ldt);
@@ -117,8 +117,8 @@ public class ItemServiceImpl implements ItemService {
         Optional<Booking> booking = bookingRepository.findByBookerIdAndItemId(authorId, itemId);
         LocalDateTime ldt = LocalDateTime.now();
         ZonedDateTime zoned = ldt.atZone(ZoneId.of("UTC"));
-        Instant instant=zoned.toInstant();
-        ldt=instant.atZone(ZoneId.of("Europe/Moscow")).toLocalDateTime();
+        Instant instant = zoned.toInstant();
+        ldt = instant.atZone(ZoneId.of("Europe/Moscow")).toLocalDateTime();
         if (booking.isPresent() && booking.get().getStatus().equals(Status.APPROVED) && booking.get().getEnd().isBefore(ldt)) {
             Item item = itemRepository.findById(itemId).orElseThrow(NotFoundException::new);
             User user = userRepository.findById(authorId).orElseThrow(NotFoundException::new);
