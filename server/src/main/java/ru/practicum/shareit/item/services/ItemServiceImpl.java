@@ -120,7 +120,10 @@ public class ItemServiceImpl implements ItemService {
         ZonedDateTime zoned = ldt.atZone(ZoneId.of("UTC"));
         Instant instant = zoned.toInstant();
         ldt = instant.atZone(ZoneId.of("Europe/Moscow")).toLocalDateTime();
-        if (booking.isPresent() && booking.get().getStatus().equals(Status.APPROVED) && booking.get().getEnd().isBefore(ldt)) {
+        if (booking.isPresent() && booking.get().getEnd().isAfter(ldt)) {
+            throw new BadRequestException("Ошибка введенных данных");
+        }
+        if (booking.isPresent() && booking.get().getStatus().equals(Status.APPROVED) /*&& booking.get().getEnd().isBefore(ldt)*/) {
             Item item = itemRepository.findById(itemId).orElseThrow(NotFoundException::new);
             User user = userRepository.findById(authorId).orElseThrow(NotFoundException::new);
             Comment comment = CommentMapper.toComment(dto, user, item);
