@@ -90,7 +90,7 @@ public class ItemServerImplTest {
         booking = new Booking();
         booking.setId(1L);
         booking.setStatus(Status.APPROVED);
-        booking.setEnd(LocalDateTime.now());
+        booking.setEnd(LocalDateTime.now().plusDays(1));
 
         commentDto = new CommentDto();
         commentDto.setId(1L);
