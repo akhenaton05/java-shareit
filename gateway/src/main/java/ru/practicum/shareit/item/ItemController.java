@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Validated
-public class itemController {
+public class ItemController {
     @Autowired
     private final ItemClient itemClient;
     private static final String SHARER_USER_ID = "X-Sharer-User-Id";
