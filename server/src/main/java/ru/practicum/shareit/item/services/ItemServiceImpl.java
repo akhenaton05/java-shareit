@@ -115,12 +115,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public CommentOutDto createComment(Long authorId, Long itemId, CommentDto dto) {
+        LocalDateTime n = LocalDateTime.now();
         Optional<Booking> booking = bookingRepository.findByBookerIdAndItemId(authorId, itemId);
         LocalDateTime ldt = LocalDateTime.now();
         ZonedDateTime zoned = ldt.atZone(ZoneId.of("UTC"));
         Instant instant = zoned.toInstant();
         ldt = instant.atZone(ZoneId.of("Europe/Moscow")).toLocalDateTime();
-        if (booking.isPresent() && booking.get().getStatus().equals(Status.APPROVED) && booking.get().getEnd().isAfter(LocalDateTime.now())) {
+        if (booking.isPresent() && booking.get().getStatus().equals(Status.APPROVED) && booking.get().getEnd().isAfter(n)) {
             Item item = itemRepository.findById(itemId).orElseThrow(NotFoundException::new);
             User user = userRepository.findById(authorId).orElseThrow(NotFoundException::new);
             Comment comment = CommentMapper.toComment(dto, user, item);
