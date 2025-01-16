@@ -44,6 +44,7 @@ public class BookingController {
     @ResponseStatus(HttpStatus.CREATED)
     public BookingOutDto createBooking(@RequestHeader(SHARER_USER_ID) Long userId,
                                        @RequestBody BookingInDto dto) {
+        System.out.println("CREATING FROM SERVER " + dto.getEnd());
         return bookingService.createBooking(userId, dto);
     }
 
