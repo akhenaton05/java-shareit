@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repositories.BookingRepository;
-import ru.practicum.shareit.exceptions.BadRequestException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidateException;
 import ru.practicum.shareit.item.CommentMapper;
@@ -119,7 +118,7 @@ public class ItemServiceImpl implements ItemService {
         LocalDateTime ldt = LocalDateTime.now();
 
         if (booking.getEnd().isAfter(ldt)) {
-            throw new BadRequestException("Ошибка введенных данных");
+            throw new ValidateException("Ошибка введенных данных");
         }
         if (booking.getStatus().equals(Status.APPROVED)) {
             Item item = itemRepository.findById(itemId).orElseThrow(NotFoundException::new);
@@ -128,7 +127,7 @@ public class ItemServiceImpl implements ItemService {
             commentRepository.save(comment);
             return CommentMapper.toOutDto(comment);
         }
-        throw new BadRequestException("Ошибка введенных данных");
+        throw new ValidateException("Ошибка введенных данных");
     }
 
     public Item checkItem(Item item) {
