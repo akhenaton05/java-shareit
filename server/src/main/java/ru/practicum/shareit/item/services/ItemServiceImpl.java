@@ -132,7 +132,15 @@ public class ItemServiceImpl implements ItemService {
         System.out.println("local time ZONED" + localNow);
         System.out.println("booking time ZONED2" + bookingEndTimeInMoscow);
 
-        if (bookingEndTime.isAfter(localNow)) {
+        ZonedDateTime bookingEndTime2 = ldt.atZone(ZoneId.of("Europe/Moscow")); // если у вас время в UTC
+        ZonedDateTime localNow2 = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
+        ZonedDateTime bookingEndTimeInMoscow2 = bookingEndTime.withZoneSameInstant(ZoneId.of("Europe/Moscow"));
+
+        System.out.println("booking AFTER time ZONED" + bookingEndTime2);
+        System.out.println("local time AFTER ZONED" + localNow2);
+        System.out.println("booking time AFTER ZONED2" + bookingEndTimeInMoscow2);
+
+        if (booking.getEnd().isAfter(ldt)) {
             throw new BadRequestException("Ошибка введенных данных");
         }
         if (booking.getStatus().equals(Status.APPROVED) /*&& booking.get().getEnd().isBefore(ldt)*/) {
