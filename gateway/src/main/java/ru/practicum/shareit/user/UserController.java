@@ -13,12 +13,15 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 @Controller
 @RequestMapping(path = "/users")
-@RequiredArgsConstructor
 @Slf4j
 @Validated
 public class UserController {
-    @Autowired
     private final UserClient userClient;
+
+    @Autowired
+    public UserController(UserClient userClient) {
+        this.userClient = userClient;
+    }
 
     @GetMapping
     public ResponseEntity<Object> getUsers() {

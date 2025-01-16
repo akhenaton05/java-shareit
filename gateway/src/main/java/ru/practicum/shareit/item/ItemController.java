@@ -15,13 +15,16 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/items")
-@RequiredArgsConstructor
 @Slf4j
 @Validated
 public class ItemController {
-    @Autowired
     private final ItemClient itemClient;
     private static final String SHARER_USER_ID = "X-Sharer-User-Id";
+
+    @Autowired
+    public ItemController(ItemClient itemClient) {
+        this.itemClient = itemClient;
+    }
 
     @GetMapping
     public ResponseEntity<Object> getItems(@RequestHeader(SHARER_USER_ID) Long userId) {
