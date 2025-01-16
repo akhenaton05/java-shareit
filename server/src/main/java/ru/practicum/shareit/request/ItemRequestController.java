@@ -1,11 +1,12 @@
 package ru.practicum.shareit.request;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestOutDto;
 import ru.practicum.shareit.request.services.ItemRequestService;
+import ru.practicum.shareit.utils.HttpHeaders;
 
 import java.util.List;
 
@@ -14,18 +15,13 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(path = "/requests")
+@AllArgsConstructor
 public class ItemRequestController {
     private final ItemRequestService itemRequestService;
-    private static final String SHARER_USER_ID = "X-Sharer-User-Id";
-
-    @Autowired
-    public ItemRequestController(ItemRequestService itemRequestService) {
-        this.itemRequestService = itemRequestService;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemRequestDto createItemRequest(@RequestHeader(SHARER_USER_ID) Long authorId, @RequestBody ItemRequestDto dto) {
+    public ItemRequestDto createItemRequest(@RequestHeader(HttpHeaders.SHARER_USER_ID) Long authorId, @RequestBody ItemRequestDto dto) {
         return itemRequestService.createItemRequest(authorId, dto);
     }
 
@@ -37,7 +33,7 @@ public class ItemRequestController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemRequestOutDto> foundItems(@RequestHeader(SHARER_USER_ID) Long authorId) {
+    public List<ItemRequestOutDto> foundItems(@RequestHeader(HttpHeaders.SHARER_USER_ID) Long authorId) {
         return itemRequestService.showRequests(authorId);
     }
 

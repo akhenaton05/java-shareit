@@ -11,6 +11,7 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemMapper {
@@ -45,7 +46,7 @@ public class ItemMapper {
         item.setDescription(dto.getDescription());
         item.setAvailable(dto.getAvailable());
         item.setOwner(new User());
-        if (dto.getRequestId() != null) {
+        if (Objects.nonNull(dto.getRequestId())) {
             ItemRequest request = new ItemRequest();
             request.setId(dto.getRequestId());
             item.setRequest(request);
