@@ -26,7 +26,6 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<Object> bookItem(@RequestHeader("X-Sharer-User-Id") long userId,
                                            @RequestBody @Valid BookingInDto requestDto) {
-        System.out.println("CREATING FROM GATEWAY " + requestDto.getEnd());
         log.info("Creating booking {}, userId={}", requestDto, userId);
         return bookingClient.bookItem(userId, requestDto);
     }

@@ -115,35 +115,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public CommentOutDto createComment(Long authorId, Long itemId, CommentDto dto) {
-//        Optional<Booking> booking = bookingRepository.findByBookerIdAndItemId(authorId, itemId);
         Booking booking = bookingRepository.findByBookerIdAndItemId(authorId, itemId).orElseThrow(NotFoundException::new);
         LocalDateTime ldt = LocalDateTime.now();
-//        ZonedDateTime zoned = ldt.atZone(ZoneId.of("UTC"));
-//        Instant instant = zoned.toInstant();
-//        ldt = instant.atZone(ZoneId.of("Europe/Moscow")).toLocalDateTime();
-        System.out.println("booking time " + booking.getEnd());
-        System.out.println("local time " + ldt);
-
-        ZonedDateTime bookingEndTime = booking.getEnd().atZone(ZoneId.of("Europe/Moscow")); // если у вас время в UTC
-        ZonedDateTime localNow = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
-        ZonedDateTime bookingEndTimeInMoscow = bookingEndTime.withZoneSameInstant(ZoneId.of("Europe/Moscow"));
-
-        System.out.println("booking time ZONED" + bookingEndTime);
-        System.out.println("local time ZONED" + localNow);
-        System.out.println("booking time ZONED2" + bookingEndTimeInMoscow);
-
-        ZonedDateTime bookingEndTime2 = ldt.atZone(ZoneId.of("Europe/Moscow")); // если у вас время в UTC
-        ZonedDateTime localNow2 = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
-        ZonedDateTime bookingEndTimeInMoscow2 = bookingEndTime.withZoneSameInstant(ZoneId.of("Europe/Moscow"));
-
-        System.out.println("booking AFTER time ZONED" + bookingEndTime2);
-        System.out.println("local time AFTER ZONED" + localNow2);
-        System.out.println("booking time AFTER ZONED2" + bookingEndTimeInMoscow2);
 
         if (booking.getEnd().isAfter(ldt)) {
             throw new BadRequestException("Ошибка введенных данных");
         }
-        if (booking.getStatus().equals(Status.APPROVED) /*&& booking.get().getEnd().isBefore(ldt)*/) {
+        if (booking.getStatus().equals(Status.APPROVED)) {
             Item item = itemRepository.findById(itemId).orElseThrow(NotFoundException::new);
             User user = userRepository.findById(authorId).orElseThrow(NotFoundException::new);
             Comment comment = CommentMapper.toComment(dto, user, item);

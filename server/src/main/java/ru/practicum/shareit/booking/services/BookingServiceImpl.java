@@ -98,7 +98,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public BookingOutDto createBooking(Long userId, BookingInDto dto) {
-        System.out.println("BOOKING CREATE TIME " + dto.getEnd());
         Item item = itemRepository.findById(dto.getItemId()).orElseThrow(NotFoundException::new);
         if (!item.getAvailable()) {
             throw new ValidateException("Запрашиваемый предмет недоступен");
